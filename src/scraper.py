@@ -8,10 +8,15 @@ import time
 from datetime import date
 from pathlib import Path
 
+
+
 # Manejo Web, paginas y webScrapping
 # ==============================================================================
 import urllib.request
+
 from selenium import webdriver
+from webdriver_manager.chrome          import ChromeDriverManager 
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -48,14 +53,29 @@ def leerUrl(pagina):
 
 # Instantiate the webdriver with the executable location of MS Edge
 # Provide the full location of the path to recognise correctly
+
+path = os.path.join(os.getcwd(), "output")
+
+
+options = Options()
+options.add_experimental_option("prefs", {
+  "download.default_directory": path, #Donde descargara
+  "download.prompt_for_download": False,
+  "download.directory_upgrade": True
+})
+options.add_argument('--headless')
+
+# Initiate the browser
+browser  = webdriver.Chrome(ChromeDriverManager().install(), chrome_options=options)
+
 cwd = os.getcwd()
-PATH = cwd+'/App/msedgedriver.exe'
-edgeBrowser = webdriver.Edge(PATH)
+#PATH = cwd+'/App/msedgedriver.exe'
+#edgeBrowser = webdriver.Edge(PATH)
 
 # This is the step for minimize browser window
-edgeBrowser.minimize_window()
+#edgeBrowser.minimize_window()
 # Browser will get navigated to the given URL
-edgeBrowser.get('https://www.linkedin.com/jobs/search/?keywords=Data%20Scientist&location=Chile&locationId=&geoId=104621616&f_TPR=r86400&position=1&pageNum=0')
+browser.get('https://www.linkedin.com/jobs/search/?keywords=Data%20Scientist&location=Chile&locationId=&geoId=104621616&f_TPR=r86400&position=1&pageNum=0')
 
 time.sleep(3)
 
